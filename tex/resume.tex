@@ -1,0 +1,130 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SIMPLE-RESUME-CV
+%% <https://github.com/zachscrivena/simple-resume-cv>
+%% This is free and unencumbered software released into the
+%% public domain; see <http://unlicense.org> for details.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% INSTRUCTIONS FOR COMPILING THIS DOCUMENT ("CV.tex")
+%% TEX ---(XeLaTeX)---> PDF:
+%%
+%% Method 1: Use latexmk for fully automated document generation:
+%%   latexmk -xelatex "CV.tex"
+%%   (add the -pvc switch to automatically recompile on changes)
+%%
+%% Method 2: Use XeLaTeX directly:
+%%   xelatex "CV.tex"
+%%   (run multiple times to resolve cross-references if needed)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[a4paper,10pt,oneside]{article}
+%\documentclass[letterpaper,10pt,oneside]{article}
+
+% Do not stop on errors during compilation.
+\nonstopmode
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PREAMBLE.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{resume_preamble.tex}
+
+% PDF settings and properties.
+\hypersetup{
+pdftitle={Resume},
+pdfcreator={XeLaTeX},
+bookmarks=false,
+unicode=true,
+bookmarksopen=true,
+pdfstartview=FitH,
+pdfpagelayout=OneColumn,
+pdfpagemode=UseOutlines,
+hidelinks,
+breaklinks}
+
+%pythontex stuff
+
+\begin{pycode}
+import sys
+sys.path.append('./../python')
+
+#SET YOUR <name>_CV PYTHON FILE HERE
+from sample_cv import cv
+
+#SET YOUR LANGUAGE HERE
+cv.language='en'
+
+\end{pycode}
+
+%SET YOUR BIBLIOGRAPHY HERE
+\addbibresource{bibliography.bib} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ACTUAL DOCUMENT.+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%%%%%%%%
+% TITLE BLOCK %
+%%%%%%%%%%%%%%%
+\title{\py{cv.first_name+' '+cv.sure_name}}
+
+\begin{subtitle}
+\par
+\py{cv.email}
+\,\BulletSymbol\,+
+\py{cv.phone}
+\end{subtitle}
+\vspace{1cm}
+\begin{body}
+
+%%%%%%%%%%%%%%%
+%% EDUCATION %%
+%%%%%%%%%%%%%%%
+\section{\py{cv.section_edu.upper()}}
+	\py{cv.education_res}~
+	&
+
+%%%%%%%%%%%%%%%%%%
+%% PUBLICATIONS %%
+%%%%%%%%%%%%%%%%%%
+
+\section{\py{cv.section_pub.upper()}}&
+\printbibsection{thesis}{Theses}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PROFESSIONAL AFFILIATIONS & ACTIVITIES %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{\py{cv.section_exp.upper()}}
+	\py{cv.experience_res}
+	&
+
+%%%%%%%%%%%%%%%+
+%% LANGUAGES %%
+%%%%%%%%%%%%%%%
+
+\section{\py{cv.section_lang.upper()}}
+	\py{cv.languages_res}
+	&
+
+%%%%%%%%%%%%
+%% SKILLS %%
+%%%%%%%%%%%%
+
+\section{\py{cv.section_skills.upper()}}&
+	\py{cv.skills_res}
+	
+%%%%%%%%%%%%%%%
+%% INTERESTS %%
+%%%%%%%%%%%%%%%
+
+\section{\py{cv.section_int.upper()}}&
+	\py{cv.interests_res}
+	
+\end{body}
+\end{document}

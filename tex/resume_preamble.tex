@@ -1,0 +1,297 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SIMPLE-RESUME-CV
+%% <https://github.com/zachscrivena/simple-resume-cv>
+%% This is free and unencumbered software released into the
+%% public domain; see <http://unlicense.org> for details.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Long table for page layout.
+\usepackage{longtable}
+
+%use pythontex
+\usepackage{pythontex}
+
+% Geometry package for page margins.
+\usepackage[
+left=2cm,
+right=2cm,
+top=4cm,
+bottom=3cm,
+includefoot]{geometry}
+
+% Hyphenation: Disabled.
+\usepackage[none]{hyphenat}
+
+% XeLaTeX packages.
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+\usepackage{xunicode}
+\usepackage{xltxtra}
+
+% Font: Use "Tinos" as the main typeface (\textnormal{}, \normalfont).
+% The "Tinos" fonts are released under the Apache License Version 2.0,
+% and can be downloaded for free at <http://www.fontsquirrel.com/fonts/tinos>.
+% Symbol table: <http://www.fileformat.info/info/unicode/font/tinos/grid.htm>
+\setmainfont
+[Path=./Fonts/Tinos/,
+ItalicFont=Tinos-Italic,
+BoldFont=Tinos-Bold,
+BoldItalicFont=Tinos-BoldItalic]
+{Tinos-Regular.ttf}
+
+% Sans-serif font: Switched to "Tinos".
+\renewcommand{\sffamily}{\rmfamily}
+
+% Typewriter (monospace) font: Switched to "Tinos".
+\renewcommand{\ttfamily}{\rmfamily}
+
+% Small caps font: Switched to "Tinos".
+\renewcommand{\scshape}{\rmfamily}
+
+% Secondary font: "GNU FreeFont".
+% The "GNU FreeFont" fonts are released under the
+% GNU General Public License Version 3, and can be downloaded
+% for free at <https://savannah.gnu.org/projects/freefont/>.
+\newcommand{\UseSecondaryFont}{\fontspec
+[Path=./Fonts/GNUFreeFont/,
+ItalicFont=FreeSerifItalic,
+BoldFont=FreeSerifBold,
+BoldItalicFont=FreeSerifBoldItalic]
+{FreeSerif.otf}}
+
+% Symbols (unicode).
+\newcommand{\BulletSymbol}{\char"25CF}
+\newcommand{\TildeSymbol}{\char"007E}
+
+% PDF settings and properties.
+\usepackage{hyperref}
+
+% Headers and footers: Blank header, page number in footer.
+\makeatletter
+\def\ps@plain{%
+\def\@oddhead{}%
+\def\@evenhead{}%
+%\def\@oddfoot{\footnotesize\hfill{\thepage}\hfill}
+%\def\@evenfoot{\footnotesize\hfill{\thepage}\hfill}}
+\def\@oddfoot{\footnotesize\hfill{}\hfill}
+\def\@evenfoot{\footnotesize\hfill{}\hfill}}
+\makeatother
+
+\pagestyle{plain}
+
+% Paragraph style: No indentation.
+\setlength{\parindent}{0in}
+
+% Footnotes: Use symbols instead of numbers for labels.
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+
+
+% Macro: title (name).
+\renewcommand{\title}[1]{%
+%\pdfbookmark{#1}{#1}%
+\par\begin{center}%
+\par\begin{Huge}%
+\textbf{#1}%
+\par\end{Huge}%
+\par\end{center}%
+\par\vspace{-1.75em}\par}
+
+% Macro: subtitle (personal information below name).
+\newenvironment{subtitle}
+{\par\begin{center}%
+\par\begin{footnotesize}}
+{\par\end{footnotesize}%
+\par\end{center}\par}
+
+% Macro: body (rest of the document).
+\newenvironment{body}
+{\par\vspace{-1em}\par
+\begin{longtable}{p{0.15\textwidth}p{0.80\textwidth}}}
+{\par\end{longtable}\par}
+
+% Macro: section (new section for Education, Research Experience, etc.).
+\renewcommand{\section}[1]{\\[-1em]\\%
+\fontsize{9pt}{11pt}\selectfont\raggedright\textbf{#1}}
+
+% remove subsection because of bibliography
+\renewcommand{\subsection}[2]{}
+
+% Macro: EntryGap (vertical gap between entries in the same section).
+\newcommand{\EntryGap}{\\[-0.5em]~&}
+
+% Macro: SmallEntryGap (small vertical gap within a long entry).
+\newcommand{\SmallEntryGap}{\par\vspace{0.3em}\par}
+
+% Macro: BibSpace (small horizontal space in bibliographic entries).
+\newcommand{\BibSpace}{\hspace{0.5em}\ignorespaces}
+
+% Macro: detail (text in smaller font under an entry).
+\newenvironment{detail}
+{\par\begin{small}}
+{\par\end{small}\par}
+
+% Macro: hide.
+\newcommand{\hide}[1]{}
+
+\newcommand{\publication}[1]{\textit{#1}}
+
+%%%%%%%%%%%%%%%%%%%%
+% List environment %
+%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{xifthen}
+%\setlength{\tabcolsep}{0pt}
+%\newenvironment{entrylist}{%
+%	\setlength\LTleft{0pt}
+%	\setlength\LTright{0pt}
+%	\begin{longtable}{@{\extracolsep{\fill}}ll}
+%	}{%
+%\end{longtable}
+%}
+
+
+\newcommand{\rightentry}[6]{%
+	&
+	\parbox[t]{.8\textwidth}{%
+		\textbf{#1}
+		\ifthenelse{\equal{#2}{None}} {} {\textit{#2}}
+		\hfill\mbox{
+		{
+			\ifthenelse{\equal{#3}{None}} {} {\textit{#3}\quad}
+			\ifthenelse{\equal{#4}{None}} {} {#4}
+		}}
+		\ifthenelse{\equal{#5}{None}} {} {\\#5}
+		\ifthenelse{\equal{#6}{None}} {} {
+			\begin{detail}
+				#6
+			\end{detail}
+		}
+		\vspace{1.5\parsep}%
+	}\\}
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\RequirePackage[style=verbose,sorting=ydnt,backend=bibtex]{biblatex}
+
+\DeclareSortingScheme{chronological}{
+	\sort[direction=descending]{\field{year}}
+	\sort[direction=descending]{\field{month}}
+}
+
+\DeclareFieldFormat[article]{title}{#1\par}
+\DeclareFieldFormat[inproceedings]{title}{#1\par}
+\DeclareFieldFormat[misc]{title}{#1\par}
+\DeclareFieldFormat[report]{title}{#1\par}
+\DeclareFieldFormat[thesis]{title}{\bfseries{#1}\par}
+\DeclareFieldFormat[report]{title}{#1\par}
+\DeclareFieldFormat{abstract}{\par Abstract: #1}
+\DeclareFieldFormat{school}{#1}
+
+
+\DeclareBibliographyDriver{article}{%
+	\printfield{title}%
+	\newblock%
+	\printnames{author}%
+	\par%
+	\newblock%
+	{%
+		\footnotesize\itshape%
+		\usebibmacro{journal+issuetitle}%
+		\setunit{\space}%
+		\printfield{pages}%
+		\newunit%
+		\printlist{publisher}%
+		\setunit*{\addcomma\space}%
+		\printfield{year}%
+		\newunit%
+	}
+	\par\vspace{0.3\baselineskip}
+}
+
+\DeclareBibliographyDriver{inproceedings}{%
+	\printfield{title}%
+	\newblock%
+	\printnames{author}%
+	\par%
+	\newblock%
+	{%
+		\footnotesize%
+		\printfield{booktitle}%
+		\setunit{\addcomma\space}%
+		\printfield{year}%
+		\setunit{\addcomma\space}%
+		\printlist{location}%
+		\newunit%
+	}
+	\par\vspace{0.3\baselineskip}
+}
+
+\DeclareBibliographyDriver{misc}{%
+	\printfield{title}%
+	\newblock%
+	\printnames{author}%
+	\par%
+	\newblock%
+	{%
+		\footnotesize\itshape%
+		\printfield{booktitle}%
+		\setunit*{\addcomma\space}%
+		\printfield{note}%
+		\setunit*{\addcomma\space}%
+		\printfield{year}%
+		\setunit{\addcomma\space}%
+		\printlist{location}%
+		\newunit%
+	}
+	\par\vspace{0.3\baselineskip}
+}
+
+\DeclareBibliographyDriver{report}{%
+	\printfield{title}%
+	\newblock%
+	\printnames{author}%
+	\par%
+	\newblock%
+	{%
+		\footnotesize\itshape%
+		\printfield{type}%
+		\setunit{\space}%
+		\printfield{number}%
+		\setunit{\addcomma\space}%
+		\printfield{year}%
+		\newunit%
+	}
+	\par\vspace{0.3\baselineskip}
+}
+
+\DeclareBibliographyDriver{thesis}{%
+	\printfield{title}%
+	\newblock%
+	\printnames{author}%
+	\par
+	\begin{detail}
+		\printfield{type}%
+		\setunit{\addcomma\space}%
+		\printfield{school}%
+		\setunit{\addcomma\space}%
+		\printfield{year}%
+		
+	\end{detail}
+	\newunit%
+	\par\vspace{0.3\baselineskip}
+}
+
+\DeclareNameFormat{author}{%
+	\ifblank{#3}{}{#3\space}#1%
+	\ifthenelse{\value{listcount}<\value{liststop}}
+	{\addcomma\space}
+	{}%
+}
+
+\newcommand{\printbibsection}[2]{
+	\vspace{-20pt}
+	\nocite{*}
+	\printbibliography[type={#1},title={#2},heading=none]
+}

@@ -1,0 +1,92 @@
+%!TEX TS-program = xelatex
+\documentclass[]{cv_class}
+%-----------------
+% PythonTex Preamble
+%-----------------
+\usepackage{pythontex}
+\begin{pycode}
+import sys
+sys.path.append('./../python')
+
+#SET YOUR <name>_CV PYTHON FILE HERE
+from sample_cv import cv
+
+#SET YOUR LANGUAGE HERE
+cv.language='en'
+
+global colorCount; colorCount=0
+def increase(): global colorCount; colorCount=(colorCount+1)%len(cv.section_colors)
+def section(text): global colorCount; color=cv.section_color_names[colorCount]; print(cv.color_first_letters(text=text.lower(), color=color, n_letters=3)); increase()
+\end{pycode}
+
+%SET YOUR BIBLIOGRAPHY HERE
+\addbibresource{bibliography.bib} 
+
+\begin{document}
+%Defining the section colors
+\py{cv.color_def}
+%-----------------
+% HEADER
+%-----------------
+\header{\py{cv.first_name.lower()}}{\py{cv.sure_name.lower()}}{\py{cv.title.lower()}}{\py{cv.image}}
+
+%-----------------
+% ABOUT/LANGUAGE/PROGRAMMING/INTERESTS
+% In the aside, each new line forces a line break
+%-----------------
+\begin{aside}[5.98]
+	\section{\py{cv.section_about}}
+	\py{cv.about_birthday.lower()}
+	\py{cv.nation.lower()}
+	~
+	\py{cv.address.lower()}
+	~
+	\py{cv.email}
+	\py{cv.phone}
+	\section{\py{cv.section_lang.lower()}}
+	\py{cv.languages.lower()}~
+	\section{\py{cv.section_prog.lower()}}
+	\py{cv.prog_skills}~
+	\section{\py{cv.section_int.lower()}}
+	\py{cv.interests}~
+\end{aside}
+
+%-----------------
+% EDUCATION
+%-----------------
+\section{\pyc{section(text=cv.section_edu)}}
+	\begin{entrylist}
+		\py{cv.education}
+	\end{entrylist}
+%-----------------
+% EXPERIENCE
+%-----------------
+\section{\pyc{section(text=cv.section_exp)}}
+	\begin{entrylist}
+		\py{cv.experience}
+	\end{entrylist}
+
+%-----------------
+% PUBLICATIONS
+%-----------------
+\section{\pyc{section(text=cv.section_pub)}}
+\printbibsection{thesis}{Theses}
+
+%-----------------
+% SKILLS
+%-----------------
+\section{\pyc{section(text=cv.section_skills)}}$  $
+\begin{entrylist}
+	\py{cv.skills}
+\end{entrylist}
+
+%-----------------
+% GOALS
+%-----------------
+\begin{aside}[1.07] %Adjust this to a largeer number if the cv has only one page.
+	\section{\py{cv.section_goals.lower()}}
+	\py{cv.goals}~
+\end{aside}
+
+\end{document}
+
