@@ -8,7 +8,7 @@ Templates for a CV and Resume and a letter.
 1. Download and install:
 	pythontex: https://github.com/gpoore/pythontex
 	pygments: https://pypi.python.org/pypi/Pygments#downloads
-	The installation directory will be denoted as *<PYTHONTEX_DIR>* and *<PYGMENTS_DIR>*.
+	The installation directory will be denoted as < PYTHONTEX_DIR> and < PYGMENTS_DIR>.
 2. Add both, <PYTHONTEX_DIR> and <PYGMENTS_DIR> to PYTHONPATH
 3. Add <PYTHONTEX_DIR>/pythontex/ to PATH
 4. Add <PYTHONTEX_DIR>/pythontex/ toTEXINPUTS
