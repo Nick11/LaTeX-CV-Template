@@ -25,7 +25,7 @@
 
 %%% modified by Karol Kozioł for ShareLaTex use
 \RequirePackage[quiet]{fontspec}
-\RequirePackage[math-style=TeX,vargreek-shape=unicode]{unicode-math}
+\RequirePackage[]{unicode-math}
 
 \newfontfamily\bodyfont
 [Path=./Fonts/,
@@ -155,9 +155,10 @@ BoldItalicFont=texgyreheros-bolditalic.otf
   }
   \begin{textblock}{4.3}(0.7,#1)
   \begin{flushright}
-  \obeycr
+%  \obeycr
+%#1
 }{%
-  \restorecr
+%  \restorecr
   \end{flushright}
   \end{textblock}
   \let\section\oldsection
@@ -305,12 +306,19 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 }
 
 \DeclareNameFormat{author}{%
-  \small\addfontfeature{Color=lightgray}%
-  \ifblank{#3}{}{#3\space}#1%
-  \ifthenelse{\value{listcount}<\value{liststop}}
-    {\addcomma\space}
-    {}%
-}
+	\small\addfontfeature{Color=lightgray}%
+	\ifgiveninits
+	{\usebibmacro{name:given-family}
+		{\namepartfamily}
+		{\namepartgiveni}
+		{\namepartprefix}
+		{\namepartsuffix}}
+	{\usebibmacro{name:given-family}
+		{\namepartfamily}
+		{\namepartgiven}
+		{\namepartprefix}
+		{\namepartsuffix}}%
+	\usebibmacro{name:andothers}}
 
 \newcommand{\printbibsection}[2]{
     \nocite{*}
@@ -325,5 +333,5 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 % Other tweaks %
 %%%%%%%%%%%%%%%%
 
-\RequirePackage[left=6.1cm,top=2cm,right=1.5cm,bottom=2.5cm,nohead,nofoot]{geometry}
+\RequirePackage[left=6.1cm,top=2cm,right=1.5cm,bottom=1.5cm,nohead,nofoot]{geometry}
 \RequirePackage{hyperref}
