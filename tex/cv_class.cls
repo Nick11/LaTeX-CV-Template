@@ -185,6 +185,7 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 \DeclareFieldFormat[report]{title}{#1\par}
 \DeclareFieldFormat{abstract}{\par Abstract: #1}
 \DeclareFieldFormat{school}{#1}
+\DeclareFieldFormat{url}{#1}
 
 
 \DeclareBibliographyDriver{article}{%
@@ -281,6 +282,30 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 	\newblock
 	\footnotesize\addfontfeature{Color=lightgray}
 	\printfield{abstract}%
+	\par%
+	\newblock
+	\printfield{url}%
+	\par\vspace{0.3\baselineskip}
+}
+\DeclareBibliographyDriver{software}{%
+	\printfield{title}%
+	\newblock%
+	\printnames{author}%
+	\par%
+	\newblock%
+	{%
+		\footnotesize\addfontfeature{Color=lightgray}\itshape%
+		\printfield{type}%
+		\setunit{\addcomma\space}%
+		\printfield{school}%
+		\setunit{\addcomma\space}%
+		\printfield{year}%
+		\newunit%
+	}
+	\newblock
+	\footnotesize\addfontfeature{Color=lightgray}
+	\printfield{abstract}%
+	\printfield{url}%
 	\par\vspace{0.3\baselineskip}
 }
 
@@ -333,5 +358,5 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 % Other tweaks %
 %%%%%%%%%%%%%%%%
 
-\RequirePackage[left=6.1cm,top=2cm,right=1.5cm,bottom=1.5cm,nohead,nofoot]{geometry}
+\RequirePackage[left=6.1cm,top=2cm,right=1.5cm,bottom=1cm,nohead,nofoot]{geometry}
 \RequirePackage{hyperref}

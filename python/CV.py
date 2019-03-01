@@ -134,14 +134,15 @@ class CV:
     @property
     def section_pub(self):
         return self.translate(self._section_pub)
-    @property
-    def about_birthday(self):
-        if self.language == 'de':
-            form = ' {D:} {MM:} {y:}'
+		
+    def about_birthday(self, use_swiss_format=False, use_pre_word=True):
+        if self.language == 'de' or use_swiss_format:
+            form = '{d:}.{m:}.{y:}'
         else:
-            form = ' {MM:} {D:} {y:}'
-        ret = self.translate(self._about_since)+\
-              self._birthday.format(form=form, language=self.language)
+            form = '{m:}/{d:}/{y:}'
+        ret = self._birthday.format(form=form, language=self.language)
+        if use_pre_word:
+            ret = self.translate(self._about_since) + ' ' + ret
         return ret
     @property
     def address(self):

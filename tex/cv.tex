@@ -11,7 +11,7 @@ sys.path.append('./../python')
 #SET YOUR <name>_CV PYTHON FILE HERE
 from sample_cv import cv
 
-#SET YOUR LANGUAGE HERE
+#SET YOUR LANGUAGE HERE 'de' or 'en'
 cv.language='en'
 
 global colorCount; colorCount=0
@@ -23,7 +23,10 @@ def section(text): global colorCount; color=cv.section_color_names[colorCount]; 
 %SET YOUR BIBLIOGRAPHY HERE
 \addbibresource{bibliography.bib} 
 
-\begin{document}
+\newenvironment{bottompar}{\par\vspace*{\fill}\centering}{\clearpage}
+
+\begin{document}	
+	
 %Defining the section colors
 \py{cv.color_def}
 %-----------------
@@ -38,7 +41,7 @@ def section(text): global colorCount; color=cv.section_color_names[colorCount]; 
 \begin{aside}[5.98]
 	\section{ \py{co(cv.section_about)}}
 	
-	\py{cv.about_birthday.lower()}
+	\py{cv.about_birthday(use_swiss_format=True).lower()}\\
 	\py{cv.nation.lower()}
 	
 	\py{cv.address.lower()}
@@ -75,7 +78,11 @@ def section(text): global colorCount; color=cv.section_color_names[colorCount]; 
 		\py{cv.experience}
 	\end{entrylist}
 
-%-----------------
+
+\pagebreak
+\newgeometry{top=1.5cm, bottom=0.5cm}
+
+>>>>>>> f5e8434... General updates
 % PUBLICATIONS
 %-----------------
 \section{\pyc{section(text=cv.section_pub)}}
