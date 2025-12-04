@@ -1,0 +1,135 @@
+image: ./imgs/sample/portrait.png
+personal:
+  first_name: Bilbo
+  sure_name: Baggins
+  title: Master Thief
+  birthday:
+    day: 2
+    month: 9
+    year: 2890
+  address: 4 Bagshot Row
+  zip: Westfarthing
+  city: Hobbiton
+  country: 
+    en: Shire
+    de: Auenland
+  email: bilbo.baggins@shire.ch
+  phone: +00 123 45 67
+languages:
+  -
+    title:
+      en: Westron
+      de: Westron
+    quality:
+      en: native
+      de: Muttersprache
+    description:
+      en: Native language
+      de: Muttersprache
+  -
+    title:
+      en: Sindarin
+      de: Sindarin
+    quality:
+      en: travelling
+      de: reisend
+    description:
+      en: Fluent (speaking, reading, writing)
+      de: Fliessend (mündlch, schriftlich)
+programming_languages:
+  - Ringuby
+  - Drathon
+  - Lone Script
+education:
+  -
+    title: Dipl. Master Thief
+    date_from:
+      year: 2941
+      month: 4
+    date_until:
+      year: 2942
+      month: 12
+    place:
+      en: Traveller's University Middle-Earth
+      de: Universität für Reisende Mittelerde
+      href_en: http://www.travel.unishire/en
+      href_de: http://www.travel.unishire/de
+    city:
+      en: Middle-Earth
+      de: Mittelerde
+    description:
+      en: Education on the Road
+      de: Ausbildung unterwegs.
+  -
+    title: Home School
+    date_until:
+      year: 2900
+      month: 6
+    place:
+      en: Bag End, Hobbiton
+      de: Beutelsend, Hobbingen
+      href: http://www.hobbiton.shire
+    description:
+      en: Focus on Avoiding Adventures
+      de: Schwerpunkt Abenteuervermeidung
+interests:
+  -
+    en: Storytelling
+    de: Geschichtenerzählen
+  -
+    en: Lore and History
+    de: Legenden und Geschichte
+  -
+    en: Pipes
+    de: Pfeifen
+it_experience:
+  -
+    title:
+      en: GIS Consulting
+      de: GIS Consulting
+    date_from:
+      year: 2941
+      month: 4
+    date_until:
+      year: 2942
+      month: 12
+    place:
+      en: Thorin's Journeydwarves
+      de: Thorins Reisezwergen
+    city:
+      en: Middle-Earth
+      de: Mittelerde
+    description:
+      en: Traveling advisor for GIS and geospatial navigation for Thorin's dragon reclamation committee.
+      de: Reisender Berater für Thorins Drachenreklamationskomitee
+skills:
+  -
+    title: Culinary Arts
+    description: Expert cook with a talent for preparing meals
+    quality:
+      en: professional
+      de: professionell
+  -
+    title: Mapmaking
+    description: Ability to understand and create maps during travels
+    quality:
+        en: expert
+        de: experte
+footer_text:
+  en: >
+    For the git repository containing the source code of this document see https://github.com/Nick11/LaTeX-CV-Template.
+  de: >
+    Das git Repository zum Source Code dieses Dokuments ist unter https://github.com/Nick11/LaTeX-CV-Template.
+section_colors:
+  - 
+    - HTML
+    - 721328
+  - 
+    - HTML
+    - 394501
+  - 
+    - HTML
+    - 2f6200
+  - 
+    - HTML
+    - 000000
