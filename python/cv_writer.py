@@ -1,6 +1,6 @@
 import sys
 
-from pylatex import Command, Document, Section, Subsection, UnsafeCommand, LineBreak
+from pylatex import Command, Document, Section, Subsection, UnsafeCommand, LineBreak, NewPage
 from pylatex.utils import NoEscape, italic
 from pylatex.base_classes import Arguments, Environment
 
@@ -41,6 +41,10 @@ class CVWriter:
         
         self.eduction_section()
         self.experience_section()
+
+        # publication starts on 2. page
+        self.doc.append(self.page_break())
+
         self.publication_section()
         self.skill_section()
         self.bottom_section()
@@ -133,6 +137,8 @@ class CVWriter:
         return Command("href", extra_arguments=[ref, ref])
     def blank_line(self):
         return NoEscape("\n")
+    def page_break(self):
+        return NewPage()
     def _write_lines(self, *lines):
         for index, line in enumerate(lines):
             if index > 0:
@@ -210,8 +216,8 @@ if __name__ == "__main__":
     # else:
     #     print("python cv_writer.py <yml_file> <en|de>")
     #     exit(1)
-    yaml_file = "./example.yml"
-    language = "en"
+    yaml_file = "./nick.yml"
+    language = "de"
     out_file = "./cv"
     print(yaml_file, language)
     cv = CV.from_yml(filename=yaml_file, language=language)
