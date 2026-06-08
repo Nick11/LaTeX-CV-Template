@@ -24,9 +24,7 @@ class CV:
         cv._it_experience = [cls.parse_entry(entry) for entry in yml["it_experience"]]
         cv._skills = [cls.parse_entry(entry) for entry in yml["skills"]]
 
-        #colors
-        section_colors = yml["section_colors"]
-        cv._section_colors = [('color'+str(i), section_colors[i][0], f"{section_colors[i][1]:06}") for i in range(len(section_colors))]
+        cv._section_accent_color = str(yml["section_accent_color"]).zfill(6)
         cv._background_color = str(yml["background_color"]).zfill(6)
 
 		#footer
@@ -144,8 +142,8 @@ class CV:
     def skills(self):
         return self._skills
     @property
-    def section_colors(self):
-        return self._section_colors
+    def section_accent_color(self):
+        return self._section_accent_color
 
     @property
     def background_color(self):

@@ -120,17 +120,5 @@ footer_text:
     For the git repository containing the source code of this document see https://github.com/Nick11/LaTeX-CV-Template.
   de: >
     Das git Repository zum Source Code dieses Dokuments ist unter https://github.com/Nick11/LaTeX-CV-Template.
-section_colors:
-  - 
-    - HTML
-    - 721328
-  - 
-    - HTML
-    - 394501
-  - 
-    - HTML
-    - 2f6200
-  - 
-    - HTML
-    - 000000background_color: "ebf1eb"section_accent_color: "162e14"
+section_accent_color: "162e14"
 background_color: "ebf1eb"

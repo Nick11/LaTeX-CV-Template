@@ -7,13 +7,13 @@ from pylatex.base_classes import Environment
 from CV import CV
 
 BIBLIOGRAPHY = "cv"
+ACCENT_COLOR = "accentcolor"
 BACKGROUND_COLOR = "pagebg"
 
 class CVWriter:
     def __init__(self, cv):
         self.cv = cv
         self.doc = Document("cv", documentclass="cvclass", fontenc=None, lmodern=False)
-        self.section_color_index = 0
         
     def write(self, outfile):
         self.define_colors()
@@ -114,12 +114,12 @@ class CVWriter:
 
     # DEFINITIONS
     def define_colors(self):
-        for (name, type, color) in self.cv.section_colors:
-            self.doc.append(
-                Command(
-                    "definecolor",
-                    extra_arguments=[name, type, str(color)]
-                )
+        # Defined in the preamble so they're available to anything in cvclass.cls
+        # that runs at \AtBeginDocument (e.g. \pagecolor{pagebg}).
+        self.doc.preamble.append(
+            Command(
+                "definecolor",
+                extra_arguments=[ACCENT_COLOR, "HTML", self.cv.section_accent_color]
             )
         )
         self.doc.preamble.append(
@@ -208,17 +208,8 @@ class CVWriter:
     def section_title(self, title):
         return Command(
             "textcolor",
-            extra_arguments=[
-                self.next_section_color(),
-                title[:3],
-                title[3:],
-            ]
+            extra_arguments=[ACCENT_COLOR, title[:3], title[3:]]
         )
-    
-    def next_section_color(self):
-        current_index = self.section_color_index
-        self.section_color_index += 1
-        return self.cv.section_colors[current_index][0]
 class Aside(Environment):
     _latex_name = "aside"
 class EntryList(Environment):
