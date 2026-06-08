@@ -132,4 +132,5 @@ section_colors:
     - 2f6200
   - 
     - HTML
-    - 000000
+    - 000000background_color: "ebf1eb"section_accent_color: "162e14"
+background_color: "ebf1eb"

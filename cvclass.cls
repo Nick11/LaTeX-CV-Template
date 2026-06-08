@@ -15,6 +15,11 @@
 
 \colorlet{textcolor}{darkergray}
 \colorlet{headercolor}{darkergray}
+\colorlet{bannertext}{white}
+% pagebg is defined per-document by cv_writer.py from the yml `background_color`.
+% \pagecolor here paints the page with it so the side image's fade target
+% matches the actual page color.
+\AtBeginDocument{\pagecolor{pagebg}}
 
 %%%%%%%%%
 % Fonts %

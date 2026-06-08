@@ -27,6 +27,7 @@ class CV:
         #colors
         section_colors = yml["section_colors"]
         cv._section_colors = [('color'+str(i), section_colors[i][0], f"{section_colors[i][1]:06}") for i in range(len(section_colors))]
+        cv._background_color = str(yml["background_color"]).zfill(6)
 
 		#footer
         cv._footer_text = yml["footer_text"]
@@ -145,6 +146,10 @@ class CV:
     @property
     def section_colors(self):
         return self._section_colors
+
+    @property
+    def background_color(self):
+        return self._background_color
     @property
     def image(self):
         if self._image==None:

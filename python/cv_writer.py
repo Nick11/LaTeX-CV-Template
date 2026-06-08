@@ -7,6 +7,8 @@ from pylatex.base_classes import Environment
 from CV import CV
 
 BIBLIOGRAPHY = "cv"
+BACKGROUND_COLOR = "pagebg"
+
 class CVWriter:
     def __init__(self, cv):
         self.cv = cv
@@ -119,6 +121,14 @@ class CVWriter:
                     extra_arguments=[name, type, str(color)]
                 )
             )
+        )
+        self.doc.preamble.append(
+            Command(
+                "definecolor",
+                extra_arguments=[BACKGROUND_COLOR, "HTML", self.cv.background_color]
+            )
+        )
+
     def define_bibliography(self):
         self.doc.preamble.append(
             Command(
