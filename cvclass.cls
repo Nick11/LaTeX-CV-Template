@@ -1,4 +1,4 @@
-\ProvidesClass{cvclass}[2015/02/17 CV class]
+\ProvidesClass{cvclass}[2025/06/08 CV class]
 \NeedsTeXFormat{LaTeX2e}
 
 \ProcessOptions\relax
@@ -10,12 +10,9 @@
 
 \RequirePackage{xcolor}
 
-\definecolor{white}{RGB}{255,255,255}
 \definecolor{darkergray}{RGB}{80,80,80}
 \definecolor{lightgray}{HTML}{999999}
 
-\colorlet{fillheader}{darkergray}
-\colorlet{header}{white}
 \colorlet{textcolor}{darkergray}
 \colorlet{headercolor}{darkergray}
 
@@ -23,7 +20,6 @@
 % Fonts %
 %%%%%%%%%
 
-%%% modified by Karol Kozioł for ShareLaTex use
 \RequirePackage[quiet]{fontspec}
 \RequirePackage[]{unicode-math}
 
@@ -38,14 +34,15 @@ BoldItalicFont=texgyreheros-bolditalic.otf]
 
 \defaultfontfeatures{Mapping=tex-text}
 \setmainfont
-[Mapping=tex-text, Color=textcolor,
+[Path=./Fonts/,
+Mapping=tex-text, Color=textcolor,
 BoldFont=texgyreheros-bold.otf,
 ItalicFont=texgyreheros-italic.otf,
 BoldItalicFont=texgyreheros-bolditalic.otf
 ]
 {texgyreheros-regular.otf}
 
-\setmathfont{texgyreheros-regular.otf}
+\setmathfont[Path=./Fonts/]{texgyreheros-regular.otf}
 
 
 %%%%%%%%%%
@@ -53,12 +50,6 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 %%%%%%%%%%
 
 \RequirePackage{tikz}
-
-\newcommand{\rolefont}{%
-  \fontsize{14pt}{24pt}\selectfont%
-  \thinfont%
-  \color{white}%
-}
 
 \newcommand{\header}[4]{%
 \begin{tikzpicture}[overlay,remember picture]
@@ -79,34 +70,28 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 }
 
 
-%%%%%%%%%%%%%
-% Structure %
-%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+% Section headings %
+%%%%%%%%%%%%%%%%%%%%
+
 \RequirePackage{parskip}
 
-\renewcommand{\section}[1]{
-  \par\vspace{\parskip}
-  {%
-    \LARGE\headingfont\textcolor{headercolor}{#1}
-  }
-  \par\vspace{\parskip}
+\RequirePackage{xparse}
+\NewDocumentCommand{\cvsection}{s m}{%
+  \IfBooleanF{#1}{\vspace{\parskip}}%
+  {\LARGE\headingfont\textcolor{headercolor}{#2}}%
+  \par\vspace{0.3\parskip}%
 }
-%\renewcommand{\subsection}[1]{
-%  \par\vspace{.25\parskip}%
-%  {%
-%  \large\headingfont\color{headercolor} \ifthenelse{\equal{#1}{*}} {} {#1}%
-%  }
-%  \par\vspace{.5\parskip}%
-%}
-\renewcommand{\subsection}[2]{}
 \pagestyle{empty}
 
 
 %%%%%%%%%%%%%%%%%%%%
-% List environment %
+% Entry lists      %
 %%%%%%%%%%%%%%%%%%%%
-\RequirePackage{xifthen}
+
+\RequirePackage{etoolbox}
 \RequirePackage{longtable}
+\newcommand{\ifnone}[3]{\ifstrequal{#1}{None}{#2}{#3}}
 \setlength{\tabcolsep}{0pt}
 \newenvironment{entrylist}{%
 	\setlength\LTleft{0pt}
@@ -127,142 +112,53 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 \newcommand{\rightentry}[6]{%
 	\parbox[t]{\textwidth}{%
 		\textbf{#1}
-		\ifthenelse{\equal{#2}{None}} {} {\textit{#2}}
+		\ifnone{#2}{}{\textit{#2}}
 		\hfill
 		{\footnotesize\addfontfeature{Color=lightgray}
-				\ifthenelse{\equal{#3}{None}} {} {\textit{#3}\quad}
-			 	\ifthenelse{\equal{#4}{None}} {} {#4}
+				\ifnone{#3}{}{\textit{#3}\quad}
+				\ifnone{#4}{}{#4}
 		}%
-		\ifthenelse{\equal{#5}{None}} {} {\\#5}
-		\ifthenelse{\equal{#6}{None}} {} {
-			\vspace{3pt}\\
-			#6	
-		}
+		\ifnone{#5}{}{\\#5}
+		\ifnone{#6}{}{\vspace{3pt}\\#6}
 		\vspace{1.5\parsep}%
 	}\\}
 
+
 %%%%%%%%%%%%%%
-% Side block %
+% Aside      %
 %%%%%%%%%%%%%%
 
 \RequirePackage[absolute,overlay]{textpos}
 \setlength{\TPHorizModule}{1cm}
 \setlength{\TPVertModule}{1cm}
 \newenvironment{aside}[1][0pt]{%
-  \let\oldsection\section
-  \renewcommand{\section}[1]{
-    \par\vspace{2\baselineskip}{\Large\headingfont\color{headercolor} ##1}
+  \renewcommand{\cvsection}[1]{%
+    \par\vspace{2\baselineskip}{\Large\headingfont\color{headercolor} ##1}%
   }
   \begin{textblock}{4.3}(0.7,#1)
   \begin{flushright}
-%  \obeycr
-%#1
 }{%
-%  \restorecr
   \end{flushright}
   \end{textblock}
-  \let\section\oldsection
+  \par
 }
+
 
 %%%%%%%%%%%%%%%%
 % Bibliography %
 %%%%%%%%%%%%%%%%
 
 \RequirePackage[style=verbose,sorting=ydnt,backend=bibtex]{biblatex}
-%\RequirePackage[backend=bibtex,style=alphabetic,sorting=ydnt]{biblatex}
-%\addbibresource{cv.bib} 
 
 \DeclareSortingScheme{chronological}{
 	\sort[direction=descending]{\field{year}}
 	\sort[direction=descending]{\field{month}}
 }
 
-\DeclareFieldFormat[article]{title}{#1\par}
-\DeclareFieldFormat[inproceedings]{title}{#1\par}
-\DeclareFieldFormat[misc]{title}{#1\par}
-\DeclareFieldFormat[report]{title}{#1\par}
 \DeclareFieldFormat[thesis]{title}{\bfseries{#1}\par}
-\DeclareFieldFormat[report]{title}{#1\par}
 \DeclareFieldFormat{abstract}{\par Abstract: #1}
 \DeclareFieldFormat{school}{#1}
 \DeclareFieldFormat{url}{#1}
-
-
-\DeclareBibliographyDriver{article}{%
-  \printfield{title}%
-  \newblock%
-  \printnames{author}%
-  \par%
-  \newblock%
-  {%
-    \footnotesize\addfontfeature{Color=lightgray}\itshape%
-    \usebibmacro{journal+issuetitle}%
-    \setunit{\space}%
-    \printfield{pages}%
-    \newunit%
-    \printlist{publisher}%
-    \setunit*{\addcomma\space}%
-    \printfield{year}%
-    \newunit%
-  }
-  \par\vspace{0.3\baselineskip}
-}
-
-\DeclareBibliographyDriver{inproceedings}{%
-  \printfield{title}%
-  \newblock%
-  \printnames{author}%
-  \par%
-  \newblock%
-  {%
-    \footnotesize\addfontfeature{Color=lightgray}%
-    \printfield{booktitle}%
-    \setunit{\addcomma\space}%
-    \printfield{year}%
-    \setunit{\addcomma\space}%
-    \printlist{location}%
-    \newunit%
-  }
-  \par\vspace{0.3\baselineskip}
-}
-
-\DeclareBibliographyDriver{misc}{%
-  \printfield{title}%
-  \newblock%
-  \printnames{author}%
-  \par%
-  \newblock%
-  {%
-    \footnotesize\addfontfeature{Color=lightgray}\itshape%
-    \printfield{booktitle}%
-    \setunit*{\addcomma\space}%
-    \printfield{note}%
-    \setunit*{\addcomma\space}%
-    \printfield{year}%
-    \setunit{\addcomma\space}%
-    \printlist{location}%
-    \newunit%
-  }
-  \par\vspace{0.3\baselineskip}
-}
-
-\DeclareBibliographyDriver{report}{%
-  \printfield{title}%
-  \newblock%
-  \printnames{author}%
-  \par%
-  \newblock%
-  {%
-    \footnotesize\addfontfeature{Color=lightgray}\itshape%
-    \printfield{type}%
-    \setunit{\space}%
-    \printfield{number}%
-    \setunit{\addcomma\space}%
-    \printfield{year}%
-    \newunit%
-  }
-  \par\vspace{0.3\baselineskip}
-}
 
 \DeclareBibliographyDriver{thesis}{%
 	\printfield{title}%
@@ -287,48 +183,6 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 	\printfield{url}%
 	\par\vspace{0.3\baselineskip}
 }
-\DeclareBibliographyDriver{software}{%
-	\printfield{title}%
-	\newblock%
-	\printnames{author}%
-	\par%
-	\newblock%
-	{%
-		\footnotesize\addfontfeature{Color=lightgray}\itshape%
-		\printfield{type}%
-		\setunit{\addcomma\space}%
-		\printfield{school}%
-		\setunit{\addcomma\space}%
-		\printfield{year}%
-		\newunit%
-	}
-	\newblock
-	\footnotesize\addfontfeature{Color=lightgray}
-	\printfield{abstract}%
-	\printfield{url}%
-	\par\vspace{0.3\baselineskip}
-}
-
-\DeclareBibliographyDriver{report}{%
-	\printfield{title}%
-	\newblock%
-	\printnames{author}%
-	\par%
-	\newblock%
-	{%
-		\footnotesize\addfontfeature{Color=lightgray}\itshape%
-		\printfield{type}%
-		\setunit{\addcomma\space}%
-		\printfield{institution}%
-		\setunit{\addcomma\space}%
-		\printfield{year}%
-		\newunit%
-	}
-	\newblock
-	\footnotesize\addfontfeature{Color=lightgray}
-	\printfield{abstract}%
-	\par\vspace{0.3\baselineskip}
-}
 
 \DeclareNameFormat{author}{%
 	\small\addfontfeature{Color=lightgray}%
@@ -351,12 +205,17 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 }
 
 
-
-
-
-%%%%%%%%%%%%%%%%
-% Other tweaks %
-%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%
+% Page setup %
+%%%%%%%%%%%%%%
 
 \RequirePackage[left=6.1cm,top=2cm,right=1.5cm,bottom=1cm,nohead,nofoot]{geometry}
 \RequirePackage{hyperref}
+
+% Page break that also reduces the top margin for the new page.
+% Use between page 1 (with its banner) and continuation pages where the
+% banner space isn't needed.
+\newcommand{\cvpagebreak}{%
+  \newpage
+  \newgeometry{left=6.1cm,top=1.5cm,right=1.5cm,bottom=1cm,nohead,nofoot}%
+}

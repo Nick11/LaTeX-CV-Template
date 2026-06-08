@@ -1,11 +1,10 @@
 import sys
 
-from pylatex import Command, Document, Section, Subsection, UnsafeCommand, LineBreak, NewPage
+from pylatex import Command, Document, UnsafeCommand, LineBreak
 from pylatex.utils import NoEscape, italic
-from pylatex.base_classes import Arguments, Environment
+from pylatex.base_classes import Environment
 
 from CV import CV
-from pathlib import Path
 
 BIBLIOGRAPHY = "cv"
 class CVWriter:
@@ -42,8 +41,8 @@ class CVWriter:
         self.eduction_section()
         self.experience_section()
 
-        # publication starts on 2. page
-        self.doc.append(self.page_break())
+        self.doc.append(Command("cvpagebreak"))
+        self.side_image()
 
         self.publication_section()
         self.skill_section()
@@ -51,55 +50,62 @@ class CVWriter:
 
     # SIDE SECTIONS
     def about_section(self):
-        with self.doc.create(Section(cv.section_about, label=False)):
-            self.doc.append(self.blank_line())
-            self.doc.append(self.cv.about_birthday(use_swiss_format=True))
-            self.doc.append(self.blank_line())
-            self._write_lines(
-                self.cv.address,
-                self.cv.city,
-                self.cv.country
-            )
-            self.doc.append(self.blank_line())
-            self._write_lines(
-                self._href(self.cv.email),
-                self.cv.phone
-            )
+        self._cvsection(cv.section_about)
+        self.doc.append(self.blank_line())
+        self.doc.append(self.cv.about_birthday(use_swiss_format=True))
+        self.doc.append(self.blank_line())
+        self._write_lines(
+            self.cv.address,
+            self.cv.city,
+            self.cv.country
+        )
+        self.doc.append(self.blank_line())
+        self._write_lines(
+            self._href(self.cv.email),
+            self.cv.phone
+        )
+
     def language_section(self):
-        with self.doc.create(Section(cv.section_languages.lower(), label=False)):
-            self.doc.append(self.blank_line())
-            self._write_nested_lines(
-                [(language, italic(skill)) for (language, skill) in cv.languages]
-            )
+        self._cvsection(cv.section_languages.lower())
+        self.doc.append(self.blank_line())
+        self._write_nested_lines(
+            [(language, italic(skill)) for (language, skill) in cv.languages]
+        )
+
     def programming_language_section(self):
-        with self.doc.create(Section(cv.section_programming_languages.lower(), label=False)):
-            self.doc.append(self.blank_line())
-            self._write_lines(*[NoEscape(lang) for lang in cv.programming_languages])
+        self._cvsection(cv.section_programming_languages.lower())
+        self.doc.append(self.blank_line())
+        self._write_lines(*[NoEscape(lang) for lang in cv.programming_languages])
+
     def interests_section(self):
-        with self.doc.create(Section(cv.section_interests.lower(), label=False)):
-            self.doc.append(self.blank_line())
-            self._write_lines(*cv.interests)
+        self._cvsection(cv.section_interests.lower())
+        self.doc.append(self.blank_line())
+        self._write_lines(*cv.interests)
 
     # MAIN SECTIONS
     def eduction_section(self):
-        with self.doc.create(Section(self.section_title(self.cv.section_education.lower()), label=False)):
-            self.doc.append(self.blank_line())
-            with self.doc.create(EntryList()):
-                self._write_lines(*[self._entry(entry) for entry in cv.education])
+        self._cvsection(self.section_title(self.cv.section_education.lower()))
+        self.doc.append(self.blank_line())
+        with self.doc.create(EntryList()):
+            self._write_lines(*[self._entry(entry) for entry in cv.education])
+
     def experience_section(self):
-        with self.doc.create(Section(self.section_title(self.cv.section_experience.lower()), label=False)):
-            self.doc.append(self.blank_line())
-            with self.doc.create(EntryList()):
-                self._write_lines(*[self._experience_entry(entry) for entry in cv.experience])
+        self._cvsection(self.section_title(self.cv.section_experience.lower()))
+        self.doc.append(self.blank_line())
+        with self.doc.create(EntryList()):
+            self._write_lines(*[self._experience_entry(entry) for entry in cv.experience])
+
     def publication_section(self):
-        with self.doc.create(Section(self.section_title(self.cv.section_publications.lower()), label=False)):
-            self.doc.append(self.blank_line())
-            self.doc.append(Command("printbibsection", extra_arguments=["thesis", "Thesis"]))
+        self._cvsection(self.section_title(self.cv.section_publications.lower()), top=True)
+        self.doc.append(self.blank_line())
+        self.doc.append(Command("printbibsection", extra_arguments=["thesis", "Thesis"]))
+
     def skill_section(self):
-        with self.doc.create(Section(self.section_title(self.cv.section_skills.lower()), label=False)):
-            self.doc.append(self.blank_line())
-            with self.doc.create(EntryList()):
-                self._write_lines(*[self._skill_entry(entry) for entry in cv.skills])
+        self._cvsection(self.section_title(self.cv.section_skills.lower()))
+        self.doc.append(self.blank_line())
+        with self.doc.create(EntryList()):
+            self._write_lines(*[self._skill_entry(entry) for entry in cv.skills])
+
     def bottom_section(self):
         with self.doc.create(BottomPart()):
             self.doc.append(self.cv.footer_text)
@@ -133,12 +139,14 @@ class CVWriter:
         self.doc.append(new_env)
 
     # HELPERS
+    def _cvsection(self, title, top=False):
+        name = "cvsection*" if top else "cvsection"
+        self.doc.append(Command(name, extra_arguments=[title]))
+
     def _href(self, ref):
         return Command("href", extra_arguments=[ref, ref])
     def blank_line(self):
         return NoEscape("\n")
-    def page_break(self):
-        return NewPage()
     def _write_lines(self, *lines):
         for index, line in enumerate(lines):
             if index > 0:
@@ -209,17 +217,14 @@ class BottomPart(Environment):
     _latex_name = "bottompar"
 
 if __name__ == "__main__":
-    # if len(sys.argv) >= 4:
-    #     yaml_file = Path(sys.argv[1])
-    #     language = sys.argv[2]
-    #     out_file = sys.argv[3]
-    # else:
-    #     print("python cv_writer.py <yml_file> <en|de>")
-    #     exit(1)
-    yaml_file = "./nick.yml"
-    language = "de"
-    out_file = "./cv"
-    print(yaml_file, language)
+    if len(sys.argv) >= 4:
+        yaml_file = sys.argv[1]
+        language = sys.argv[2]
+        out_file = sys.argv[3]
+    else:
+        yaml_file = "./example.yml"
+        language = "en"
+        out_file = "./cv"
     cv = CV.from_yml(filename=yaml_file, language=language)
     writer = CVWriter(cv=cv)
-    outfile = writer.write(out_file)
+    writer.write(out_file)
