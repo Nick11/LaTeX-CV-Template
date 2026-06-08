@@ -16,6 +16,7 @@ class CV:
             cv = cls(language=language)
         
         cv._image = yml["image"]
+        cv._side_image = yml.get("side_image")
         cv._personal = yml["personal"]
         cv._languages = [cls.parse_entry(entry) for entry in yml["languages"]]
         cv._programming_languages = yml["programming_languages"]
@@ -154,6 +155,10 @@ class CV:
             return ''
         else:
             return '\\includegraphics[width=\\paperwidth]{{{img:}}}'.format(img=self._image)
+
+    @property
+    def side_image(self):
+        return self._side_image
 	
     @property
     def footer_text(self):

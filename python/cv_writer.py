@@ -112,6 +112,11 @@ class CVWriter:
         with self.doc.create(BottomPart()):
             self.doc.append(self.cv.footer_text)
 
+    def side_image(self):
+        if self.cv.side_image is None:
+            return
+        self.doc.append(UnsafeCommand("sideimage", extra_arguments=[self.cv.side_image]))
+
     # DEFINITIONS
     def define_colors(self):
         # Defined in the preamble so they're available to anything in cvclass.cls

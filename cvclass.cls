@@ -50,28 +50,34 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 \setmathfont[Path=./Fonts/]{texgyreheros-regular.otf}
 
 
-%%%%%%%%%%
-% Header %
-%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+% Header & images  %
+%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{tikz}
+\usetikzlibrary{fadings}
+\tikzfading[name=fade-east,left color=transparent!100,right color=transparent!0]
 
 \newcommand{\header}[4]{%
 \begin{tikzpicture}[overlay,remember picture]
-	\node[opacity=0.9,shift={(0cm,-4cm)}] (img) at (current page.north){
-		#4
+	\node[shift={(0cm,-4cm)}] (img) at (current page.north){#4};
+	\node [anchor=south east,shift={(0cm,0.8cm)}] (name) at (img.south east) {%
+		\fontsize{40pt}{100}\color{bannertext}%
+		{\thinfont #1}{\bodyfont  #2}
 	};
-    \node [anchor=south east,shift={(0cm,0.8cm)}] (name) at (img.south east) {%
-      \fontsize{40pt}{100}\color{header}%
-      {\thinfont #1}{\bodyfont  #2}
-    };
-    \node [anchor=north] at (name.south) {%
-      \fontsize{14pt}{24pt}\color{header}%
-      \thinfont #3%
-    };
-  \end{tikzpicture}
-  \vspace{4.2cm}
- 
+	\node [anchor=north] at (name.south) {%
+		\fontsize{14pt}{24pt}\color{bannertext}%
+		\thinfont #3%
+	};
+\end{tikzpicture}
+\vspace{4.2cm}
+}
+
+\newcommand{\sideimage}[1]{%
+\begin{tikzpicture}[overlay,remember picture]
+	\node[anchor=north west,inner sep=0pt] (sideimg) at (current page.north west) {\includegraphics[width=5.6cm,height=\paperheight]{#1}};
+	\fill[pagebg,path fading=fade-east] ([xshift=-1mm]sideimg.north east) rectangle (sideimg.south east);
+\end{tikzpicture}%
 }
 
 

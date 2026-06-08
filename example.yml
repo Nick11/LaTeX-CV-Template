@@ -1,4 +1,5 @@
 image: ./imgs/sample/portrait.png
+side_image: ./imgs/sample/side.jpeg
 personal:
   first_name: Bilbo
   sure_name: Baggins
