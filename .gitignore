@@ -25,3 +25,4 @@ Pygments-2.0.2/
 *.tex
 *.pdf
 cv_publish/
+!sample_cv.pdf
