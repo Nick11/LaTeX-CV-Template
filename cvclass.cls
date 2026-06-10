@@ -28,36 +28,28 @@
 \RequirePackage[quiet]{fontspec}
 
 % --- Font family ---
-% To switch the document to a different font, change only this \setmainfont
-% block. The per-element style macros below pick up new weights automatically
-% as long as the family supplies them; otherwise fontspec falls back gracefully.
+% To change the font see "Font" in README.md
+% The per-element style macros below pick up new weights automatically as long as the family supplies them; otherwise fontspec falls back gracefully.
 \defaultfontfeatures{Mapping=tex-text}
-\setmainfont{Noto Sans}[
-  Path = ./Fonts/NotoSans/,
+\setmainfont{IBM Plex Sans}[
+  Path = ./Fonts/IBMPlexSans/,
   Extension = .ttf,
-  UprightFont    = NotoSans-Regular,
-  BoldFont       = NotoSans-Bold,
-  ItalicFont     = NotoSans-Italic,
-  BoldItalicFont = NotoSans-BoldItalic,
-  FontFace = {l}{n}{NotoSans-Light},
-  FontFace = {l}{it}{NotoSans-LightItalic},
-  FontFace = {el}{n}{NotoSans-ExtraLight},
-  FontFace = {sb}{n}{NotoSans-SemiBold},
-  FontFace = {sb}{it}{NotoSans-SemiBoldItalic},
+  UprightFont = VF,
+  ItalicFont  = Italic-VF,
 ]
+\newcommand{\cvWeight}[1]{\addfontfeatures{RawFeature={+axis={wght=#1}}}}
 
 % --- Per-element styles ---
-% Size + weight + shape per logical CV part. Tweak here to adapt look to a new
-% font's weight axis without touching the layout macros further below.
-\newcommand{\cvHeaderFirstNameStyle}{\fontsize{40pt}{100}\selectfont\fontseries{el}\selectfont}
+% Tweak font per-element look here
+\newcommand{\cvHeaderFirstNameStyle}{\fontsize{40pt}{100}\selectfont\cvWeight{200}}
 \newcommand{\cvHeaderLastNameStyle}{\fontsize{40pt}{100}\selectfont}
-\newcommand{\cvHeaderTitleStyle}{\fontsize{14pt}{24pt}\selectfont\fontseries{l}\selectfont}
-\newcommand{\cvSectionTitleMainStyle}{\LARGE\fontseries{sb}\selectfont}
-\newcommand{\cvSectionTitleAsideStyle}{\Large\fontseries{sb}\selectfont}
-\newcommand{\cvEntryTitleStyle}{\bfseries}
+\newcommand{\cvHeaderTitleStyle}{\fontsize{14pt}{24pt}\selectfont\cvWeight{300}}
+\newcommand{\cvSectionTitleMainStyle}{\LARGE\cvWeight{600}}
+\newcommand{\cvSectionTitleAsideStyle}{\Large\cvWeight{600}}
+\newcommand{\cvEntryTitleStyle}{\cvWeight{700}}
 \newcommand{\cvEntrySubtitleStyle}{\itshape}
 \newcommand{\cvEntryMetaStyle}{\footnotesize}
-\newcommand{\cvBiblioTitleStyle}{\bfseries}
+\newcommand{\cvBiblioTitleStyle}{\cvWeight{700}}
 \newcommand{\cvBiblioMetaStyle}{\footnotesize\itshape}
 \newcommand{\cvBiblioAuthorStyle}{\small}
 
