@@ -64,6 +64,45 @@ Example:
 python .\python\cv_writer.py .\example.yml en sample_cv
 ```
 
+## Font
+
+Requires a Variable Font (single TTF with a continuous weight axis).
+
+To change: 
+1. Pick a font at [fonts.google.com](https://fonts.google.com/), filter sidebar **Number of styles → Variable**.
+    Italic variant is optional but recommended (CV uses italic in subtitles/meta).
+2. Download **upright VF .ttf** (and italic VF if available — not static)
+3. Place in `Fonts/<FontName>/`, rename to `VF.ttf` and `Italic-VF.ttf`.
+    Example for `Inter` font:
+    ```
+    Fonts/
+    └── Inter/
+        ├── Italic-VF.ttf
+        └── VF.ttf
+    ```
+
+4. Edit the `% --- Font family ---` block in `cvclass.cls`.
+    ```latex
+    \setmainfont{<new font>}[
+      Path = ./Fonts/<new font>/,
+      Extension = .ttf,
+      UprightFont = VF,
+      ItalicFont  = Italic-VF,
+    ]
+    ```
+   Example for `Inter` font:
+    ```latex
+    \setmainfont{Inter}[
+      Path = ./Fonts/Inter/,
+      Extension = .ttf,
+      UprightFont = VF,
+      ItalicFont  = Italic-VF,
+    ]
+    ```
+    *Single-file font (no italic VF):* omit the `ItalicFont` line and add `AutoFakeSlant = 0.2,` — synthetic italic via slanting.
+
+5. `./compile.sh` and check `cv.pdf`.
+  *If fonts or font styles are missing latex renders the text in a different font. Check carefully if the fonts are correct.*
 
 
 ## Images
