@@ -26,3 +26,5 @@ Pygments-2.0.2/
 *.pdf
 cv_publish/
 !sample_cv.pdf
+Fonts/*
+!Fonts/IBMPlexSans/
