@@ -1,0 +1,23 @@
+# Source files: normalize line endings to LF on commit
+*.py    text eol=lf
+*.tex   text eol=lf
+*.cls   text eol=lf
+*.bib   text eol=lf
+*.yml   text eol=lf
+*.txt   text eol=lf
+*.sh    text eol=lf
+*.md    text eol=lf
+
+# Windows batch files: must stay CRLF
+*.bat   text eol=crlf
+
+# Fonts directory: don't normalize anything inside (overrides *.txt for licenses)
+Fonts/** -text
+
+# Binary asset extensions (explicit, helps git diff/merge)
+*.ttf   binary
+*.otf   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.pdf   binary
