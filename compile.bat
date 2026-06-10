@@ -1,9 +1,9 @@
 python .\python\cv_writer.py %~f1 %2 cv
 if not exist cv.aux (
-    xelatex -interaction=nonstopmode cv.tex
+    lualatex -interaction=nonstopmode cv.tex
 )
 bibtex cv
-xelatex -interaction=nonstopmode cv.tex
+lualatex -interaction=nonstopmode cv.tex
 
 DEL cv.tmp
 DEL cv.aux

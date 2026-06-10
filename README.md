@@ -49,9 +49,9 @@ or
 Execute:
 ```bash
 python .\python\cv_writer.py <your-yml-file> <language-code> <out-filename>
-xelatex -interaction=nonstopmode cv.tex
+lualatex -interaction=nonstopmode cv.tex
 bibtex cv
-xelatex -interaction=nonstopmode cv.tex
+lualatex -interaction=nonstopmode cv.tex
 ```
 
 with`:
