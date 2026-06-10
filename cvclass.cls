@@ -19,35 +19,47 @@
 % pagebg is defined per-document by cv_writer.py from the yml `background_color`.
 % \pagecolor here paints the page with it so the side image's fade target
 % matches the actual page color.
-\AtBeginDocument{\pagecolor{pagebg}}
+\AtBeginDocument{\pagecolor{pagebg}\color{textcolor}}
 
 %%%%%%%%%
 % Fonts %
 %%%%%%%%%
 
 \RequirePackage[quiet]{fontspec}
-\RequirePackage[]{unicode-math}
 
-\newfontfamily\bodyfont
-[Path=./Fonts/,
-BoldFont=texgyreheros-bold.otf,
-ItalicFont=texgyreheros-italic.otf,
-BoldItalicFont=texgyreheros-bolditalic.otf]
-{texgyreheros-regular.otf}
-\newfontfamily\thinfont[Path=./Fonts/]{Lato-Light.ttf}
-\newfontfamily\headingfont[Path=./Fonts/]{texgyreheros-bold.otf}
-
+% --- Font family ---
+% To switch the document to a different font, change only this \setmainfont
+% block. The per-element style macros below pick up new weights automatically
+% as long as the family supplies them; otherwise fontspec falls back gracefully.
 \defaultfontfeatures{Mapping=tex-text}
-\setmainfont
-[Path=./Fonts/,
-Mapping=tex-text, Color=textcolor,
-BoldFont=texgyreheros-bold.otf,
-ItalicFont=texgyreheros-italic.otf,
-BoldItalicFont=texgyreheros-bolditalic.otf
+\setmainfont{Noto Sans}[
+  Path = ./Fonts/NotoSans/,
+  Extension = .ttf,
+  UprightFont    = NotoSans-Regular,
+  BoldFont       = NotoSans-Bold,
+  ItalicFont     = NotoSans-Italic,
+  BoldItalicFont = NotoSans-BoldItalic,
+  FontFace = {l}{n}{NotoSans-Light},
+  FontFace = {l}{it}{NotoSans-LightItalic},
+  FontFace = {el}{n}{NotoSans-ExtraLight},
+  FontFace = {sb}{n}{NotoSans-SemiBold},
+  FontFace = {sb}{it}{NotoSans-SemiBoldItalic},
 ]
-{texgyreheros-regular.otf}
 
-\setmathfont[Path=./Fonts/]{texgyreheros-regular.otf}
+% --- Per-element styles ---
+% Size + weight + shape per logical CV part. Tweak here to adapt look to a new
+% font's weight axis without touching the layout macros further below.
+\newcommand{\cvHeaderFirstNameStyle}{\fontsize{40pt}{100}\selectfont\fontseries{el}\selectfont}
+\newcommand{\cvHeaderLastNameStyle}{\fontsize{40pt}{100}\selectfont}
+\newcommand{\cvHeaderTitleStyle}{\fontsize{14pt}{24pt}\selectfont\fontseries{l}\selectfont}
+\newcommand{\cvSectionTitleMainStyle}{\LARGE\fontseries{sb}\selectfont}
+\newcommand{\cvSectionTitleAsideStyle}{\Large\fontseries{sb}\selectfont}
+\newcommand{\cvEntryTitleStyle}{\bfseries}
+\newcommand{\cvEntrySubtitleStyle}{\itshape}
+\newcommand{\cvEntryMetaStyle}{\footnotesize}
+\newcommand{\cvBiblioTitleStyle}{\bfseries}
+\newcommand{\cvBiblioMetaStyle}{\footnotesize\itshape}
+\newcommand{\cvBiblioAuthorStyle}{\small}
 
 
 %%%%%%%%%%%%%%%%%%%%
@@ -62,12 +74,12 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 \begin{tikzpicture}[overlay,remember picture]
 	\node[shift={(0cm,-4cm)}] (img) at (current page.north){#4};
 	\node [anchor=south east,shift={(0cm,0.8cm)}] (name) at (img.south east) {%
-		\fontsize{40pt}{100}\color{bannertext}%
-		{\thinfont #1}{\bodyfont  #2}
+		\color{bannertext}%
+		{\cvHeaderFirstNameStyle #1}{\cvHeaderLastNameStyle #2}%
 	};
 	\node [anchor=north] at (name.south) {%
-		\fontsize{14pt}{24pt}\color{bannertext}%
-		\thinfont #3%
+		\color{bannertext}%
+		{\cvHeaderTitleStyle #3}%
 	};
 \end{tikzpicture}
 \vspace{4.2cm}
@@ -90,7 +102,7 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 \RequirePackage{xparse}
 \NewDocumentCommand{\cvsection}{s m}{%
   \IfBooleanF{#1}{\vspace{\parskip}}%
-  {\LARGE\headingfont\textcolor{headercolor}{#2}}%
+  {\cvSectionTitleMainStyle\textcolor{headercolor}{#2}}%
   \par\vspace{0.3\parskip}%
 }
 \pagestyle{empty}
@@ -111,22 +123,21 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 }{%
   \end{longtable}
 }
-\renewcommand{\bfseries}{\headingfont\color{headercolor}}
 \newcommand{\entry}[4]{%
   #1&\parbox[t]{11.8cm}{%
-    \textbf{#2}%
+    \textcolor{headercolor}{\cvEntryTitleStyle #2}%
     \hfill%
-    {\footnotesize\addfontfeature{Color=lightgray} #3}\\%
+    {\cvEntryMetaStyle\addfontfeature{Color=lightgray} #3}\\%
     #4\vspace{1.5\parsep}%
   }\\}
 
 \newcommand{\rightentry}[6]{%
 	\parbox[t]{\textwidth}{%
-		\textbf{#1}
-		\ifnone{#2}{}{\textit{#2}}
+		\textcolor{headercolor}{\cvEntryTitleStyle #1}
+		\ifnone{#2}{}{{\cvEntrySubtitleStyle #2}}
 		\hfill
-		{\footnotesize\addfontfeature{Color=lightgray}
-				\ifnone{#3}{}{\textit{#3}\quad}
+		{\cvEntryMetaStyle\addfontfeature{Color=lightgray}
+				\ifnone{#3}{}{{\cvEntrySubtitleStyle #3}\quad}
 				\ifnone{#4}{}{#4}
 		}%
 		\ifnone{#5}{}{\\#5}
@@ -144,7 +155,7 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 \setlength{\TPVertModule}{1cm}
 \newenvironment{aside}[1][0pt]{%
   \renewcommand{\cvsection}[1]{%
-    \par\vspace{2\baselineskip}{\Large\headingfont\color{headercolor} ##1}%
+    \par\vspace{2\baselineskip}{\cvSectionTitleAsideStyle\color{headercolor} ##1}%
   }
   \begin{textblock}{4.3}(0.7,#1)
   \begin{flushright}
@@ -166,7 +177,7 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 	\sort[direction=descending]{\field{month}}
 }
 
-\DeclareFieldFormat[thesis]{title}{\bfseries{#1}\par}
+\DeclareFieldFormat[thesis]{title}{\textcolor{headercolor}{\cvBiblioTitleStyle #1}\par}
 \DeclareFieldFormat{abstract}{\par Abstract: #1}
 \DeclareFieldFormat{school}{#1}
 \DeclareFieldFormat{url}{#1}
@@ -178,7 +189,7 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 	\par%
 	\newblock%
 	{%
-		\footnotesize\addfontfeature{Color=lightgray}\itshape%
+		\cvBiblioMetaStyle\addfontfeature{Color=lightgray}%
 		\printfield{type}%
 		\setunit{\addcomma\space}%
 		\printfield{school}%
@@ -187,7 +198,7 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 		\newunit%
 	}
 	\newblock
-	\footnotesize\addfontfeature{Color=lightgray}
+	\cvEntryMetaStyle\addfontfeature{Color=lightgray}
 	\printfield{abstract}%
 	\par%
 	\newblock
@@ -196,7 +207,7 @@ BoldItalicFont=texgyreheros-bolditalic.otf
 }
 
 \DeclareNameFormat{author}{%
-	\small\addfontfeature{Color=lightgray}%
+	\cvBiblioAuthorStyle\addfontfeature{Color=lightgray}%
 	\ifgiveninits
 	{\usebibmacro{name:given-family}
 		{\namepartfamily}
