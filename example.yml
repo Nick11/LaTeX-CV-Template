@@ -118,8 +118,8 @@ skills:
         de: experte
 footer_text:
   en: >
-    For the git repository containing the source code of this document see https://github.com/Nick11/LaTeX-CV-Template.
+    For the git repository containing the source code of this document see \href{https://github.com/Nick11/LaTeX-CV-Template}{https://github.com/Nick11/LaTeX-CV-Template}.
   de: >
-    Das git Repository zum Source Code dieses Dokuments ist unter https://github.com/Nick11/LaTeX-CV-Template.
+    Das git Repository zum Source Code dieses Dokuments ist unter \href{https://github.com/Nick11/LaTeX-CV-Template}{https://github.com/Nick11/LaTeX-CV-Template}.
 section_accent_color: "162e14"
 background_color: "ebf1eb"

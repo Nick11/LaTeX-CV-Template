@@ -110,7 +110,7 @@ class CVWriter:
 
     def bottom_section(self):
         with self.doc.create(BottomPart()):
-            self.doc.append(self.cv.footer_text)
+            self.doc.append(NoEscape(self.cv.footer_text))
 
     def side_image(self):
         if self.cv.side_image is None:
